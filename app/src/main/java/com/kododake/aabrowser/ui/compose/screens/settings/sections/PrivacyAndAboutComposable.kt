@@ -75,6 +75,7 @@ fun PrivacyAndAboutComposable(
     var userAgent by remember { mutableStateOf(BrowserPreferences.getUserAgentProfile(context)) }
     var customUserAgent by remember { mutableStateOf(BrowserPreferences.getCustomUserAgent(context)) }
     var drmL3Enabled by remember { mutableStateOf(BrowserPreferences.isDrmL3EnforcerEnabled(context)) }
+    var adBlockEnabled by remember { mutableStateOf(BrowserPreferences.isAdBlockerEnabled(context)) }
     var showUaDialog by remember { mutableStateOf(false) }
     var showCustomUaDialog by remember { mutableStateOf(false) }
     var showClearCookiesDialog by remember { mutableStateOf(false) }
@@ -106,6 +107,29 @@ fun PrivacyAndAboutComposable(
                 onClick = { showCustomUaDialog = true }
             )
         }
+
+        Spacer(Modifier.height(3.dp))
+
+        ExpressiveListItem(
+            headline = stringResource(R.string.settings_ad_blocker),
+            supportingText = stringResource(R.string.settings_ad_blocker_description),
+            leadingIcon = Icons.Rounded.Security,
+            position = ListGroupPosition.Middle,
+            trailingContent = {
+                Switch(
+                    checked = adBlockEnabled,
+                    onCheckedChange = { checked ->
+                        adBlockEnabled = checked
+                        BrowserPreferences.setAdBlockerEnabled(context, checked)
+                    }
+                )
+            },
+            onClick = {
+                val next = !adBlockEnabled
+                adBlockEnabled = next
+                BrowserPreferences.setAdBlockerEnabled(context, next)
+            }
+        )
 
         Spacer(Modifier.height(3.dp))
 

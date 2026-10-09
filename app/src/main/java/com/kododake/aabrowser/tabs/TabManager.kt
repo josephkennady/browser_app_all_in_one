@@ -25,6 +25,7 @@ import com.kododake.aabrowser.R
 import com.kododake.aabrowser.bookmarks.BookmarkIconUtils
 import com.kododake.aabrowser.bookmarks.BookmarkManager
 import com.kododake.aabrowser.data.BrowserPreferences
+import com.kododake.aabrowser.data.prefs.RecentlyClosedTabsPreferences
 import com.kododake.aabrowser.databinding.ActivityMainBinding
 import com.kododake.aabrowser.model.UserAgentProfile
 import com.kododake.aabrowser.ui.compose.screens.tabs.TabItemUi
@@ -145,6 +146,7 @@ class TabManager(
         if (index < 0) return
 
         val removedTab = browserTabs.removeAt(index)
+        RecentlyClosedTabsPreferences.add(activity, removedTab.currentUrl, displayTitleForTab(removedTab))
         onSpeechTabClosed()
 
         removedTab.speechBridge.destroy()

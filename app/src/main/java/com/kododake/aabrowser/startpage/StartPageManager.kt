@@ -26,6 +26,8 @@ import androidx.compose.runtime.mutableStateOf
 import com.kododake.aabrowser.R
 import com.kododake.aabrowser.bookmarks.BookmarkManager
 import com.kododake.aabrowser.data.BrowserPreferences
+import com.kododake.aabrowser.data.prefs.RecentlyClosedTabsPreferences
+import com.kododake.aabrowser.ui.compose.screens.startpage.RecentlyClosedTabUi
 import com.kododake.aabrowser.databinding.ActivityMainBinding
 import com.kododake.aabrowser.ui.QRUtils
 import com.kododake.aabrowser.ui.compose.screens.startpage.StartPageScreenCallbacks
@@ -96,6 +98,8 @@ class StartPageManager(
                 )
             }
             val hasResumePage = !BrowserPreferences.getLastVisitedUrl(activity).isNullOrBlank()
+            val recentlyClosed = RecentlyClosedTabsPreferences.get(activity)
+                .map { RecentlyClosedTabUi(url = it.url, title = it.title) }
             val qrBitmap = QRUtils.generateQrCode("https://github.com/sponsors/kododake", 200)
 
             val screenCallbacks = StartPageScreenCallbacks(
@@ -126,6 +130,14 @@ class StartPageManager(
                         callbacks.loadUrlFromIntent(last)
                     }
                 },
+                onRecentlyClosedTabClick = { tab ->
+                    RecentlyClosedTabsPreferences.remove(activity, tab.url)
+                    callbacks.loadUrlFromIntent(tab.url)
+                },
+                onClearRecentlyClosedTabs = {
+                    RecentlyClosedTabsPreferences.clear(activity)
+                    refreshStartPage()
+                },
                 onPhotoOnlyToggle = {
                     isStartPagePhotoOnlyMode = !isStartPagePhotoOnlyMode
                     applyStartPagePhotoOnlyMode()
@@ -145,6 +157,7 @@ class StartPageManager(
                 context = activity,
                 slots = slots,
                 hasResumePage = hasResumePage,
+                recentlyClosedTabs = recentlyClosed,
                 sponsorsQrBitmap = qrBitmap,
                 customBackgroundBitmapState = backgroundRenderer.customBackgroundBitmapState,
                 customBackgroundBitmapProvider = { backgroundRenderer.customBackgroundBitmap },

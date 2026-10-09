@@ -105,6 +105,8 @@
     <string name="settings_quick_action_button_position_bottom_right">Bottom right</string>
     <string name="settings_quick_action_button_position_top_left">Top left</string>
     <string name="settings_quick_action_button_position_top_right">Top right</string>
+    <string name="start_page_recently_closed_tabs">Recently Closed Tabs</string>
+    <string name="start_page_clear_all">Clear All</string>
     <string name="settings_start_page">Start page</string>
     <string name="settings_start_page_count">%1$d/%2$d quick links configured</string>
     <string name="settings_start_page_background_default">Background: default gradient</string>
@@ -129,6 +131,8 @@
     <string name="settings_user_agent_custom_empty_fallback">Falls back to Android Chrome if blank.</string>
     <string name="settings_site_data_title">Privacy and site data</string>
     <string name="settings_site_data_description">Manage saved site permissions, cookies, and local site data stored by the browser.</string>
+    <string name="settings_ad_blocker">Ad &amp; tracker blocker</string>
+    <string name="settings_ad_blocker_description">Blocks ads and trackers using EasyList, EasyPrivacy, uBlock and Brave filter lists (updated every few days). Reload the page after changing.\nEnabled by default.</string>
     <string name="settings_drm_l3_enforcer">DRM Widevine L3 enforcer</string>
     <string name="settings_drm_l3_enforcer_description">Enforces Widevine L3 compatibility to resolve black screen or playback failures on unsupported hardware.\nEnabled by default.</string>
     <string name="settings_clear_site_permissions">Reset saved site permissions</string>

@@ -33,6 +33,7 @@ import android.webkit.WebViewClient
 import androidx.webkit.WebViewFeature
 import com.kododake.aabrowser.R
 import com.kododake.aabrowser.data.BrowserPreferences
+import com.kododake.aabrowser.web.adblock.AdBlocker
 
 class BrowserWebViewClient(
     private val callbacks: BrowserCallbacks
@@ -44,6 +45,30 @@ class BrowserWebViewClient(
             return true
         }
         return handleUri(uri)
+    }
+
+    @Volatile private var pageUrl: String? = null
+
+    private fun adBlockEnabled(view: WebView): Boolean {
+        AdBlocker.ensureStarted(view.context)
+        return BrowserPreferences.isAdBlockerEnabled(view.context)
+    }
+
+    override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+        if (adBlockEnabled(view) && AdBlocker.shouldBlock(request, pageUrl)) {
+            return WebResourceResponse("text/plain", "utf-8", 200, "OK", emptyMap(), "".byteInputStream())
+        }
+        return super.shouldInterceptRequest(view, request)
+    }
+
+    private fun injectCosmeticFilters(view: WebView, url: String?) {
+        if (!adBlockEnabled(view)) return
+        AdBlocker.cosmeticScript(url)?.let { view.evaluateJavascript(it, null) }
+    }
+
+    override fun onPageCommitVisible(view: WebView, url: String?) {
+        super.onPageCommitVisible(view, url)
+        injectCosmeticFilters(view, url)
     }
 
     private fun handleUri(uri: Uri?): Boolean {
@@ -58,6 +83,7 @@ class BrowserWebViewClient(
     override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         val stringUrl = url ?: return
+        pageUrl = stringUrl
         val uri = Uri.parse(stringUrl)
         val scheme = uri.scheme?.lowercase()
 
@@ -74,6 +100,7 @@ class BrowserWebViewClient(
     override fun onPageFinished(view: WebView, url: String?) {
         super.onPageFinished(view, url)
         view.evaluateJavascript(SpeechRecognitionBridge.POLYFILL_JS, null)
+        injectCosmeticFilters(view, url)
         if (!WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
             if (BrowserPreferences.isDrmL3EnforcerEnabled(view.context)) {
                 view.evaluateJavascript(WebScripts.DRM_L3_ENFORCER_JS, null)

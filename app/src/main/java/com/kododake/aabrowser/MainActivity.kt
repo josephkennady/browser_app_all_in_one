@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,6 +40,7 @@ import com.kododake.aabrowser.main.MenuFabController
 import com.kododake.aabrowser.main.WebViewWarmupHelper
 import com.kododake.aabrowser.model.QuickActionButtonMode
 import com.kododake.aabrowser.tabs.BrowserTab
+import com.kododake.aabrowser.tv.TvCursorController
 import com.kododake.aabrowser.ui.MainActivitySetup
 import com.kododake.aabrowser.ui.controllers.NavigationButtonUpdater
 import com.kododake.aabrowser.ui.controllers.ProgressIndicatorController
@@ -76,6 +78,22 @@ class MainActivity : AppCompatActivity(), MainActivityCallbackFactory.CallbackHo
 
     private val progressController: ProgressIndicatorController by lazy {
         ProgressIndicatorController(binding.progressComposeView)
+    }
+
+    private val tvCursorController: TvCursorController by lazy {
+        TvCursorController(
+            context = this,
+            container = binding.contentRoot,
+            webViewProvider = { webView },
+            isStartPageShowing = { managers.startPageManager.isShowingStartPage },
+            shouldHandle = {
+                !binding.menuOverlay.isVisible &&
+                    !managers.startPageManager.isNavigating &&
+                    (managers.startPageManager.isShowingStartPage || webView?.isVisible == true)
+            },
+            onLongPressCenter = ::onQuickActionButtonPressed,
+            onPointerActivity = ::onShowMenuButtonTemporarily
+        )
     }
 
     var webView: WebView? = null
@@ -123,6 +141,11 @@ class MainActivity : AppCompatActivity(), MainActivityCallbackFactory.CallbackHo
         FreeDroidWarnHelper.checkAndShow(this, managers.themeManager.resolveThemeColor(androidx.appcompat.R.attr.colorError)) { url ->
             managers.navigationManager.loadUrlFromIntent(url)
         }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (::binding.isInitialized && tvCursorController.onKeyEvent(event)) return true
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onNewIntent(intent: Intent) {

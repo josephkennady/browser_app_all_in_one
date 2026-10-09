@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.kododake.aabrowser"
-        minSdk = 35
+        minSdk = 28
         targetSdk = 37
         versionCode = 9
         versionName = "3.0"

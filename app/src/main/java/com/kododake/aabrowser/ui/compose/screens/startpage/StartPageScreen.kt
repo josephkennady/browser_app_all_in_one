@@ -45,7 +45,9 @@ data class StartPageScreenCallbacks(
     val onClearSlot: (Int) -> Unit = {},
     val onResumeClick: () -> Unit = {},
     val onPhotoOnlyToggle: () -> Unit = {},
-    val onOpenSponsors: (String) -> Unit = {}
+    val onOpenSponsors: (String) -> Unit = {},
+    val onRecentlyClosedTabClick: (RecentlyClosedTabUi) -> Unit = {},
+    val onClearRecentlyClosedTabs: () -> Unit = {}
 )
 
 @Composable
@@ -53,6 +55,7 @@ fun StartPageScreen(
     context: Context,
     slots: List<StartPageSlotUi>,
     hasResumePage: Boolean,
+    recentlyClosedTabs: List<RecentlyClosedTabUi> = emptyList(),
     sponsorsQrBitmap: Bitmap?,
     customBackgroundBitmap: Bitmap? = null,
     isNavigating: Boolean = false,
@@ -84,6 +87,14 @@ fun StartPageScreen(
                         onSlotClick = callbacks.onSlotClick,
                         onMoveSlot = callbacks.onMoveSlot,
                         onClearSlot = callbacks.onClearSlot
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+
+                    StartPageRecentlyClosedTabs(
+                        tabs = recentlyClosedTabs,
+                        onTabClick = callbacks.onRecentlyClosedTabClick,
+                        onClearAll = callbacks.onClearRecentlyClosedTabs
                     )
 
                     Spacer(Modifier.height(16.dp))

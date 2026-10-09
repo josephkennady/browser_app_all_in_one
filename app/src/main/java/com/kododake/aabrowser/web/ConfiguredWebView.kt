@@ -43,6 +43,7 @@ import androidx.webkit.ScriptHandler
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import com.kododake.aabrowser.R
+import com.kododake.aabrowser.data.BrowserPreferences
 import com.kododake.aabrowser.model.UserAgentProfile
 
 fun configureWebView(
@@ -58,6 +59,16 @@ fun configureWebView(
         if (enableDrmL3Enforcer && WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
             val handler = WebViewCompat.addDocumentStartJavaScript(this, WebScripts.DRM_L3_ENFORCER_JS, setOf("*"))
             setTag(R.id.webview_drm_l3_script_handler_tag, handler)
+        }
+
+        if (BrowserPreferences.isAdBlockerEnabled(context) &&
+            WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)
+        ) {
+            WebViewCompat.addDocumentStartJavaScript(
+                this,
+                WebScripts.YOUTUBE_ADBLOCK_JS,
+                setOf("https://www.youtube.com", "https://m.youtube.com", "https://music.youtube.com", "https://youtube.com")
+            )
         }
 
         isHorizontalScrollBarEnabled = false

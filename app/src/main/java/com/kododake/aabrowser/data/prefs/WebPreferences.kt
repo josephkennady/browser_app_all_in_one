@@ -23,6 +23,19 @@ object WebPreferences {
     const val PREFS_NAME = "browser_prefs"
     private const val KEY_DRM_L3_ENFORCER = "drm_l3_enforcer_enabled"
     const val DEFAULT_DRM_L3_ENFORCER = true
+    private const val KEY_AD_BLOCKER = "ad_blocker_enabled"
+    const val DEFAULT_AD_BLOCKER = true
+
+    fun isAdBlockerEnabled(context: Context): Boolean =
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getBoolean(KEY_AD_BLOCKER, DEFAULT_AD_BLOCKER)
+
+    fun setAdBlockerEnabled(context: Context, enabled: Boolean) {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(KEY_AD_BLOCKER, enabled)
+            .apply()
+    }
 
     fun isDrmL3EnforcerEnabled(context: Context): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
