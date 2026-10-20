@@ -25,4 +25,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "AABrowser"
 include(":app")
- 
+
+include(":tv")

@@ -1,3 +1,17 @@
+# Browser App All In One — our custom version
+
+This repository contains our customized browser, based on [kododake/AABrowser](https://github.com/kododake/AABrowser), with a separate lightweight Android TV app.
+
+**[Download AA Browser TV Lite 1.0 APK](https://github.com/josephkennady/browser_app_all_in_one/releases/download/tv-lite-v1.0/AA-Browser-TV-Lite-1.0.apk)** — Android TV 11+, approximately 29 KB. Install and open **AA Browser TV Lite**. It installs alongside the original browser.
+
+Mi remote: arrows move focus or the webpage pointer, OK selects/clicks, and Back returns to browser controls. No Menu key is required. The TV-only module has no mobile/car runtime dependencies or YouTube ad-modification scripts. [Build details, controls, and test limitations](docs/TV_LITE.md).
+
+The APK is a non-debuggable compact sideload build signed with our development key. It uses the TV's installed Android System WebView. YouTube search and embedded playback were tested in an Android TV emulator; performance on physical TVs may vary.
+
+The original app and upstream documentation are retained below for attribution. Its Android 15 requirement applies to the original car app, not TV Lite.
+
+---
+
 # <img src="https://github.com/user-attachments/assets/fa4252fa-b71e-4c87-9b93-d8ad832434cc" width="48" height="48" valign="bottom" /> AA Browser
 
 <a href="https://trendshift.io/repositories/45344" target="_blank"><img src="https://trendshift.io/api/badge/repositories/45344" alt="kododake%2FAABrowser | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
@@ -14,7 +28,7 @@ Transform your "parked time" with a sleek, modern browser designed specifically 
 
 > [!CAUTION]
 > **Beware of Fake Websites**
-> Fake websites impersonating AA Browser have appeared. **This GitHub repository (https://github.com/kododake/AABrowser) is the ONLY official source.** To prevent malware infections and financial damage, absolutely do not trust or download from any other websites.
+> Fake websites impersonating AA Browser have appeared. **The original upstream project is https://github.com/kododake/AABrowser. This repository is our independent modified version.** To prevent malware infections and financial damage, absolutely do not trust or download from any other websites.
 
 > [!NOTE]
 > **Requires Android 15 or later**

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AA Browser TV Lite</string>
+    <style name="TvTheme" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#80CBC4</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">#102036</item>
+    </style>
+</resources>
